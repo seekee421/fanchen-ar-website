@@ -1,0 +1,41 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="toolGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C2D12;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EA580C;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="metalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#64748B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#475569;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 扳手主体 -->
+  <path d="M8 20L20 8C22 6 25 6 27 8C29 10 29 13 27 15L24 18L30 24L42 12C44 10 44 7 42 5C40 3 37 3 35 5L23 17L20 20C18 22 15 22 13 20C11 18 11 15 13 13L16 10L10 4C8 2 5 2 3 4C1 6 1 9 3 11L8 20Z" fill="url(#toolGradient)"/>
+  
+  <!-- 螺丝刀 -->
+  <rect x="25" y="25" width="3" height="20" rx="1.5" fill="url(#metalGradient)" transform="rotate(45 26.5 35)"/>
+  <rect x="24" y="24" width="5" height="4" rx="2" fill="url(#toolGradient)" transform="rotate(45 26.5 26)"/>
+  
+  <!-- 扳手细节 -->
+  <circle cx="15" cy="15" r="2" fill="#FCD34D"/>
+  <circle cx="33" cy="33" r="1.5" fill="#FCD34D"/>
+  
+  <!-- 齿轮装饰 -->
+  <g transform="translate(35, 8)">
+    <circle cx="0" cy="0" r="4" fill="url(#metalGradient)"/>
+    <path d="M-1.5 -4L1.5 -4L2 -2L-2 -2Z" fill="url(#metalGradient)"/>
+    <path d="M-1.5 4L1.5 4L2 2L-2 2Z" fill="url(#metalGradient)"/>
+    <path d="M-4 -1.5L-4 1.5L-2 2L-2 -2Z" fill="url(#metalGradient)"/>
+    <path d="M4 -1.5L4 1.5L2 2L2 -2Z" fill="url(#metalGradient)"/>
+    <circle cx="0" cy="0" r="1.5" fill="#DC2626"/>
+  </g>
+  
+  <!-- 技能指示线 -->
+  <path d="M12 28L18 34" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <path d="M6 22L12 28" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  
+  <!-- 维修符号 -->
+  <circle cx="40" cy="40" r="6" fill="#1F2937" opacity="0.8"/>
+  <text x="40" y="44" text-anchor="middle" fill="#F59E0B" font-size="8" font-weight="bold">24/7</text>
+</svg> 

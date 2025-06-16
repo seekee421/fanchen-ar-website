@@ -1,0 +1,39 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="targetGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D9488;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="centerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EF4444;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 外环 -->
+  <circle cx="24" cy="24" r="20" fill="none" stroke="url(#targetGradient)" stroke-width="3"/>
+  
+  <!-- 第二环 -->
+  <circle cx="24" cy="24" r="15" fill="none" stroke="url(#targetGradient)" stroke-width="2.5"/>
+  
+  <!-- 第三环 -->
+  <circle cx="24" cy="24" r="10" fill="none" stroke="url(#targetGradient)" stroke-width="2"/>
+  
+  <!-- 中心圆 -->
+  <circle cx="24" cy="24" r="6" fill="url(#centerGradient)"/>
+  
+  <!-- 中心点 -->
+  <circle cx="24" cy="24" r="2" fill="#FFFFFF"/>
+  
+  <!-- 瞄准线 -->
+  <line x1="4" y1="24" x2="12" y2="24" stroke="url(#targetGradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="36" y1="24" x2="44" y2="24" stroke="url(#targetGradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="4" x2="24" y2="12" stroke="url(#targetGradient)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="36" x2="24" y2="44" stroke="url(#targetGradient)" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- 装饰性箭头 -->
+  <path d="M36 18L42 24L36 30L38 24Z" fill="url(#targetGradient)" opacity="0.7"/>
+  
+  <!-- 精确度指示器 -->
+  <circle cx="24" cy="24" r="7.5" fill="none" stroke="#059669" stroke-width="0.5" stroke-dasharray="2,2" opacity="0.6"/>
+</svg> 

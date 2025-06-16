@@ -1,0 +1,78 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rocketBodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1D4ED8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="rocketFlameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FEF3C7;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#FCD34D;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="windowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DBEAFE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#93C5FD;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- 火箭主体 -->
+  <path d="M40 8C44 8 47 11 47 15V50C47 54 44 57 40 57C36 57 33 54 33 50V15C33 11 36 8 40 8Z" fill="url(#rocketBodyGradient)" filter="url(#glow)"/>
+  
+  <!-- 火箭鼻锥 -->
+  <path d="M40 8L47 20H33L40 8Z" fill="#60A5FA"/>
+  
+  <!-- 主窗口 -->
+  <circle cx="40" cy="28" r="6" fill="url(#windowGradient)" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="40" cy="28" r="3" fill="#FFFFFF" opacity="0.8"/>
+  
+  <!-- 次要窗口 -->
+  <circle cx="40" cy="40" r="3" fill="url(#windowGradient)" stroke="#3B82F6" stroke-width="1"/>
+  <circle cx="40" cy="40" r="1.5" fill="#FFFFFF" opacity="0.6"/>
+  
+  <!-- 左侧机翼 -->
+  <path d="M33 42L25 50L28 58L36 50Z" fill="url(#rocketBodyGradient)"/>
+  <path d="M30 46L26 50L28 54L32 50Z" fill="#60A5FA"/>
+  
+  <!-- 右侧机翼 -->
+  <path d="M47 42L55 50L52 58L44 50Z" fill="url(#rocketBodyGradient)"/>
+  <path d="M50 46L54 50L52 54L48 50Z" fill="#60A5FA"/>
+  
+  <!-- 主火焰 -->
+  <path d="M36 57L40 75L44 57C44 57 42 65 40 65C38 65 36 57 36 57Z" fill="url(#rocketFlameGradient)" filter="url(#glow)"/>
+  
+  <!-- 侧面火焰 -->
+  <path d="M33 55L36 70L39 55C39 55 37 62 36 62C35 62 33 55 33 55Z" fill="url(#rocketFlameGradient)" opacity="0.8"/>
+  <path d="M47 55L44 70L41 55C41 55 43 62 44 62C45 62 47 55 47 55Z" fill="url(#rocketFlameGradient)" opacity="0.8"/>
+  
+  <!-- 小火焰装饰 -->
+  <path d="M30 52L33 62L36 52C36 52 34 57 33 57C32 57 30 52 30 52Z" fill="#F59E0B" opacity="0.6"/>
+  <path d="M50 52L47 62L44 52C44 52 46 57 47 57C48 57 50 52 50 52Z" fill="#F59E0B" opacity="0.6"/>
+  
+  <!-- 装饰条纹 -->
+  <rect x="35" y="32" width="10" height="2" rx="1" fill="#DBEAFE"/>
+  <rect x="35" y="36" width="10" height="2" rx="1" fill="#DBEAFE"/>
+  <rect x="35" y="46" width="10" height="2" rx="1" fill="#DBEAFE"/>
+  
+  <!-- 顶部装饰 -->
+  <circle cx="40" cy="15" r="2" fill="#60A5FA"/>
+  
+  <!-- 星星装饰 -->
+  <g transform="translate(20, 20)">
+    <path d="M0 -4L1 -1L4 0L1 1L0 4L-1 1L-4 0L-1 -1Z" fill="#FCD34D" opacity="0.8"/>
+  </g>
+  <g transform="translate(60, 35)">
+    <path d="M0 -3L0.7 -0.7L3 0L0.7 0.7L0 3L-0.7 0.7L-3 0L-0.7 -0.7Z" fill="#FCD34D" opacity="0.6"/>
+  </g>
+  <g transform="translate(15, 45)">
+    <path d="M0 -2L0.5 -0.5L2 0L0.5 0.5L0 2L-0.5 0.5L-2 0L-0.5 -0.5Z" fill="#FCD34D" opacity="0.7"/>
+  </g>
+</svg> 
