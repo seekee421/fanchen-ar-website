@@ -16,6 +16,30 @@ const newsArticles = [
   { slug: 'ar-future-prospects', lastModified: '2024-12-08' },
 ];
 
+// 用于安全编码XML中的中文字符
+function encodeForXML(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// 根据URL获取新闻标题（简化版）
+function getNewsTitle(url: string): string {
+  const slug = url.split('/').pop();
+  const titleMap: Record<string, string> = {
+    'ar-technology-trend-2024': 'AR技术发展趋势2024',
+    'industrial-ar-solutions': '工业AR解决方案深度解析',
+    'educational-ar-applications': '教育领域AR应用案例分享',
+    'retail-ar-transformation': '零售行业AR数字化转型',
+    'ar-future-prospects': 'AR技术未来发展前景',
+  };
+  
+  return encodeForXML(titleMap[slug || ''] || 'AR技术资讯');
+}
+
 export async function GET() {
   const baseUrl = 'https://fanchen-ar.com';
   const currentDate = new Date().toISOString().split('T')[0];
@@ -71,8 +95,11 @@ export async function GET() {
   // 合并所有URL
   const allUrls = [...staticPages, ...newsPages];
 
+  // 公司名称需要进行XML编码
+  const companyName = encodeForXML('武汉凡尘合创科技');
+
   // 生成XML sitemap
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+  const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
@@ -82,14 +109,14 @@ export async function GET() {
 ${allUrls
   .map(
     (page) => `  <url>
-    <loc>${page.url}</loc>
+    <loc>${encodeForXML(page.url)}</loc>
     <lastmod>${page.lastModified}</lastmod>
     <changefreq>${page.changeFrequency}</changefreq>
     <priority>${page.priority}</priority>
     ${page.url.includes('/news/') ? `
     <news:news>
       <news:publication>
-        <news:name>武汉凡尘合创科技</news:name>
+        <news:name>${companyName}</news:name>
         <news:language>zh-cn</news:language>
       </news:publication>
       <news:publication_date>${page.lastModified}</news:publication_date>
@@ -100,25 +127,15 @@ ${allUrls
   .join('\n')}
 </urlset>`;
 
-  return new NextResponse(sitemap, {
+  // 使用TextEncoder确保正确的UTF-8编码
+  const encoder = new TextEncoder();
+  const encodedContent = encoder.encode(sitemapContent);
+
+  return new Response(encodedContent, {
     status: 200,
     headers: {
-      'Content-Type': 'application/xml',
+      'Content-Type': 'application/xml; charset=utf-8',
       'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
     },
   });
 }
-
-// 根据URL获取新闻标题（简化版）
-function getNewsTitle(url: string): string {
-  const slug = url.split('/').pop();
-  const titleMap: Record<string, string> = {
-    'ar-technology-trend-2024': 'AR技术发展趋势2024',
-    'industrial-ar-solutions': '工业AR解决方案深度解析',
-    'educational-ar-applications': '教育领域AR应用案例分享',
-    'retail-ar-transformation': '零售行业AR数字化转型',
-    'ar-future-prospects': 'AR技术未来发展前景',
-  };
-  
-  return titleMap[slug || ''] || 'AR技术资讯';
-} 

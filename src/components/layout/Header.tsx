@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Container, Button } from '@/components/ui';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isInHeroSection, setIsInHeroSection] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const pathname = usePathname(); // 添加这行来获取当前路径
 
   // 确保组件已挂载，避免 hydration 错误
   useEffect(() => {
@@ -25,15 +27,19 @@ const Header = () => {
       const scrollY = window.scrollY;
       
       setIsScrolled(scrollY > 10);
-      // 当滚动超过300px时，认为已经离开Hero区域
-      // 当滚动距离小于 200px 时仍视为处于 Hero 区域
-      setIsInHeroSection(scrollY < 200);
+      // 只有在首页才使用Hero区域检测逻辑
+      if (pathname === '/') {
+        setIsInHeroSection(scrollY < 200);
+      } else {
+        // 对于其他页面，始终使用非Hero样式
+        setIsInHeroSection(false);
+      }
     };
 
     handleScroll(); // Check initial position
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMounted]);
+  }, [isMounted, pathname]); // 添加pathname依赖
 
   // Navigation items
   const navItems = [
@@ -193,11 +199,13 @@ const Header = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button 
-                  variant={isInHeroSection && !isScrolled ? "secondary" : "primary"} 
+                  variant={isInHeroSection ? "secondary" : "primary"} 
                   size="md"
                   className={cn(
                     "font-semibold transition-all duration-300 shadow-lg hover:shadow-xl",
-                    isInHeroSection && !isScrolled && "bg-white/15 text-white border-white/30 hover:bg-white hover:text-blue-600 backdrop-blur-sm"
+                    isInHeroSection 
+                      ? "bg-white/15 text-white border-white/30 hover:bg-white hover:text-blue-600 backdrop-blur-sm"
+                      : "bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700"
                   )}
                 >
                   免费咨询

@@ -23,7 +23,7 @@ const defaultMeta = {
   siteName: '武汉凡尘合创科技有限公司',
   siteUrl: 'https://fanchen-ar.com',
   defaultTitle: '武汉凡尘合创科技 - 专业AR/VR/MR技术解决方案提供商',
-  defaultDescription: '武汉凡尘合创科技专注于AR、VR、MR技术研发与应用，为工业制造、教育培训、零售电商等行业提供专业的增强现实解决方案。联系电话：027-8888-9999',
+  defaultDescription: '武汉凡尘合创科技专注于AR、VR、MR技术研发与应用，为工业制造、教育培训、零售电商等行业提供专业的增强现实解决方案。联系电话：027-8811-6621',
   defaultKeywords: 'AR技术,VR技术,MR技术,增强现实,虚拟现实,混合现实,武汉AR公司,工业AR,教育AR,零售AR',
   defaultOgImage: '/images/og-default.jpg',
   twitterHandle: '@fanchen_ar',
@@ -75,7 +75,7 @@ export const EnhancedSEO: React.FC<SEOProps> = ({
     description: defaultMeta.defaultDescription,
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+86-027-8888-9999',
+      telephone: '+86-027-8811-6621',
       contactType: 'customer service',
       areaServed: 'CN',
       availableLanguage: ['Chinese', 'English'],

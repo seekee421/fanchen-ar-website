@@ -17,7 +17,7 @@ import { Section, Container, Heading, Paragraph, Button, Card, CardContent } fro
 import { SEO } from '@/components/seo';
 
 
-// 将 mediaItems 移到组件外部，避免每次渲染时重新创建
+// Move mediaItems outside component to avoid re-creation on each render
 const mediaItems = [
   {
     type: 'video',
@@ -36,14 +36,14 @@ const mediaItems = [
   }
 ];
 
-// 轮播背景组件
+// Hero background carousel component
 const HeroBackgroundCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
 
-  // 确保组件已挂载，避免 hydration 错误
+  // Ensure component is mounted to avoid hydration errors
   useEffect(() => {
     setIsMounted(true);
     setIsLoaded(true);
@@ -51,35 +51,35 @@ const HeroBackgroundCarousel = () => {
 
 
 
-  // 自动轮播
+  // Auto carousel
   useEffect(() => {
     if (!isMounted) return;
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % mediaItems.length);
-    }, 8000); // 8秒切换一次
+    }, 8000); // Switch every 8 seconds
     return () => clearInterval(interval);
   }, [isMounted]);
 
-  // 视频播放处理
+  // Video playback handling
   useEffect(() => {
     if (!isMounted) return;
     
-    // 暂停所有视频
+    // Pause all videos
     videoRefs.current.forEach(video => {
       if (video) {
         video.pause();
       }
     });
     
-    // 播放当前视频
+    // Play current video
     const currentVideo = videoRefs.current[currentIndex];
     const currentItem = mediaItems[currentIndex];
     if (currentVideo && currentItem?.type === 'video') {
       const playVideo = () => {
         currentVideo.play().catch(err => {
-          // 忽略 AbortError，这是正常的中断
+          // Ignore AbortError as it's a normal interruption
           if (err.name !== 'AbortError') {
-            console.warn('视频播放失败:', err);
+            console.warn('Video playback failed:', err);
           }
         });
       };
@@ -92,7 +92,7 @@ const HeroBackgroundCarousel = () => {
     }
   }, [currentIndex, isMounted]);
 
-  // 清理视频资源
+  // Clean up video resources
   useEffect(() => {
     return () => {
       videoRefs.current.forEach(video => {
@@ -105,7 +105,7 @@ const HeroBackgroundCarousel = () => {
     };
   }, []);
 
-  // 在组件未挂载时返回静态背景
+  // Return static background when component is not mounted
   if (!isMounted) {
     return (
       <div className="absolute inset-0 overflow-hidden">
@@ -117,7 +117,7 @@ const HeroBackgroundCarousel = () => {
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* 媒体轮播层 */}
+      {/* Media carousel layer */}
       {mediaItems.map((item, index) => (
         <div
           key={index}
@@ -146,7 +146,7 @@ const HeroBackgroundCarousel = () => {
               ) : (
                 <source src={item.src} type="video/mp4" />
               )}
-              您的浏览器不支持视频播放。
+              Your browser does not support video playback.
             </video>
           ) : (
             <img
@@ -159,11 +159,11 @@ const HeroBackgroundCarousel = () => {
         </div>
       ))}
 
-      {/* 增强渐变遮罩层 */}
+      {/* Enhanced gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
       <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-accent/20" />
       
-      {/* 轮播指示器 */}
+      {/* Carousel indicators */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
         {mediaItems.map((_, index) => (
           <button
@@ -177,7 +177,7 @@ const HeroBackgroundCarousel = () => {
                 ? 'bg-white scale-110 shadow-lg'
                 : 'bg-white/50 hover:bg-white/70'
             }`}
-            aria-label={`切换到第${index + 1}个素材`}
+            aria-label={`Switch to item ${index + 1}`}
           />
         ))}
       </div>
@@ -185,7 +185,7 @@ const HeroBackgroundCarousel = () => {
   );
 };
 
-// 服务数据
+// Services data
 const services = [
   {
     icon: (
@@ -222,7 +222,7 @@ const services = [
   }
 ];
 
-// 行业应用数据
+// Industry applications data
 const industries = [
   {
     title: "制造业",
@@ -258,7 +258,7 @@ const industries = [
   }
 ];
 
-// 核心优势数据
+// Core advantages data
 const advantages = [
   {
     icon: <Zap className="w-12 h-12 text-accent" />,
@@ -294,7 +294,15 @@ const advantages = [
 
 export default function Home() {
   const [currentIndustryIndex, setCurrentIndustryIndex] = useState(0);
+  const [showHeroContent, setShowHeroContent] = useState(false);
+  const [hoverTimer, setHoverTimer] = useState<NodeJS.Timeout | null>(null);
   
+  // Chatbot related functions
+  const openChatbot = () => {
+    // Directly open FastGPT chat link
+    window.open('https://cloud.fastgpt.cn/chat/share?shareId=osjorpiqjv94supyepa3ruih', '_blank');
+  };
+
   return (
     <Layout>
       <SEO 
@@ -305,93 +313,123 @@ export default function Home() {
       
       {/* Hero Section */}
       <Section variant="primary" padding="xl" className="relative overflow-hidden min-h-screen">
-          {/* 轮播背景 */}
+          {/* Carousel background */}
           <HeroBackgroundCarousel />
           
-          {/* 装饰性光效 */}
+          {/* Decorative light effects */}
           <div className="absolute inset-0 z-5">
             <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-accent/10 rounded-full blur-3xl animate-pulse" />
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
         </div>
         
           {/* Hero Content */}
-          <div className="relative z-10 h-full flex items-center justify-center w-full">
+          <div 
+            className="relative z-10 h-full flex items-center justify-center w-full"
+            onMouseEnter={() => {
+              if (hoverTimer) clearTimeout(hoverTimer);
+              const timer = setTimeout(() => {
+                setShowHeroContent(true);
+              }, 3000); // 3 second delay
+              setHoverTimer(timer);
+            }}
+            onMouseLeave={() => {
+              if (hoverTimer) {
+                clearTimeout(hoverTimer);
+                setHoverTimer(null);
+              }
+              setShowHeroContent(false);
+            }}
+          >
             <div className="flex items-center justify-center min-h-screen py-20 w-full">
-              {/* 居中内容 */}
+              {/* Centered content */}
               <motion.div
                 initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                animate={{ 
+                  opacity: showHeroContent ? 1 : 0, 
+                  y: showHeroContent ? 0 : -50 
+                }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
                 className="text-center max-w-4xl mx-auto px-4"
               >
             <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
+                  initial={{ opacity: 0, y: -30 }}
+                  animate={{ 
+                    opacity: showHeroContent ? 1 : 0, 
+                    y: showHeroContent ? 0 : -30 
+                  }}
+                  transition={{ duration: 0.6, delay: showHeroContent ? 0.2 : 0 }}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/90 text-sm font-medium mb-6"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>领先的AR技术解决方案</span>
                 </motion.div>
 
-                <Heading 
-                  as="h1" 
-                  size="4xl"
-                  className="mb-8 text-white font-bold leading-tight"
-                >
-                  <span className="block text-6xl lg:text-7xl mb-4">
-                    重塑空间
-                  </span>
-                  <span className="block text-4xl lg:text-5xl bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
-                    轻而易现
-                  </span>
-              </Heading>
-
-                <Paragraph 
-                  size="xl" 
-                  className="mb-10 text-white/90 leading-relaxed max-w-3xl mx-auto text-center"
-                >
-                  致力于实现虚与实的高价值链接，为企业提供全栈AR技术解决方案
-              </Paragraph>
-
-                <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                  <Link href="/services">
-                    <Button 
-                      size="lg" 
-                      className="px-10 py-5 text-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white hover:from-cyan-500 hover:to-blue-600 shadow-2xl hover:shadow-cyan-500/25 transform hover:-translate-y-1 transition-all duration-300 rounded-full"
-                    >
-                      计算空间梦想
-                    </Button>
-                  </Link>
-                  <Link href="/products">
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
-                      className="px-10 py-5 text-lg font-semibold border-2 border-white/40 text-white hover:bg-white/10 backdrop-blur-sm shadow-2xl hover:shadow-white/25 transform hover:-translate-y-1 transition-all duration-300 rounded-full"
-                    >
-                      链接虚实世界
-                    </Button>
-                  </Link>
-                </div>
-
-                {/* 核心能力标签 */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.8 }}
-                  className="flex flex-wrap gap-4 mt-12 justify-center"
+                  initial={{ opacity: 0, y: -40 }}
+                  animate={{ 
+                    opacity: showHeroContent ? 1 : 0, 
+                    y: showHeroContent ? 0 : -40 
+                  }}
+                  transition={{ duration: 0.7, delay: showHeroContent ? 0.4 : 0 }}
                 >
-                  <div className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                    <span className="text-white font-medium">全栈AR能力</span>
-                  </div>
-                  <div className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                    <span className="text-white font-medium">端到端解决方案</span>
-                  </div>
-                  <div className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                    <span className="text-white font-medium">软硬一体应用</span>
-                  </div>
+                  <Heading 
+                    as="h1" 
+                    size="4xl"
+                    className="mb-8 text-white font-bold leading-tight"
+                  >
+                    <span className="block text-6xl lg:text-7xl mb-4">
+                      重塑空间
+                    </span>
+                    <span className="block text-4xl lg:text-5xl bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+                      轻而易现
+                    </span>
+                  </Heading>
                 </motion.div>
-              </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: -30 }}
+                  animate={{ 
+                    opacity: showHeroContent ? 1 : 0, 
+                    y: showHeroContent ? 0 : -30 
+                  }}
+                  transition={{ duration: 0.6, delay: showHeroContent ? 0.6 : 0 }}
+                >
+                  <Paragraph 
+                    size="xl" 
+                    className="mb-10 text-white/90 leading-relaxed max-w-3xl mx-auto text-center"
+                  >
+                    致力于实现虚与实的高价值链接，为企业提供全栈AR技术解决方案
+                  </Paragraph>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ 
+                    opacity: showHeroContent ? 1 : 0, 
+                    y: showHeroContent ? 0 : -20 
+                  }}
+                  transition={{ duration: 0.6, delay: showHeroContent ? 0.8 : 0 }}
+                  className="flex flex-col sm:flex-row gap-6 justify-center"
+                >
+                  <Button 
+                    variant="secondary" 
+                    size="lg" 
+                    className="bg-white text-indigo-600 hover:bg-gray-100 shadow-2xl hover:scale-110 hover:shadow-white/25 transition-all duration-500 px-10 py-5 text-lg font-bold rounded-2xl border-2 border-white/20 backdrop-blur-sm"
+                    onClick={openChatbot}
+                  >
+                    <span className="flex items-center gap-2">
+                      免费咨询
+                    </span>
+                  </Button>
+                  <Link href="/cases">
+                      <Button variant="outline" size="lg" className="border-2 border-white/80 text-white hover:bg-white/10 hover:border-white shadow-2xl hover:scale-110 hover:shadow-white/25 transition-all duration-500 px-10 py-5 text-lg font-bold rounded-2xl backdrop-blur-sm">
+                        <span className="flex items-center gap-2">
+                          查看案例
+                        </span>
+                      </Button>
+                  </Link>
+                </motion.div>
+            </motion.div>
           </div>
         </div>
       </Section>
@@ -486,20 +524,75 @@ export default function Home() {
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-200/30 to-pink-200/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
         
         <Container className="relative z-10">
-          <div className="text-center mb-16">
+          {/* AR Demo GIFs Section - 优化移动端显示 */}
+          <div className="mb-16">
+            {/* AR应用示例标题 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
+              className="text-center mb-8"
             >
-                <Heading as="h2" size="3xl" className="mb-6 text-gray-900">
-                  行业应用领域
-              </Heading>
-                <Paragraph size="lg" className="max-w-3xl mx-auto text-gray-700 leading-relaxed">
-                  我们的AR技术已成功应用于多个行业，为不同领域的客户创造价值，
-                  推动传统行业的数字化转型和智能化升级。
-              </Paragraph>
+              <div className="inline-flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <span className="text-blue-600 font-medium text-sm uppercase tracking-wider">AR SHOWCASE</span>
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                沉浸式AR体验演示
+              </h3>
+              <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
+                体验前沿增强现实技术，感受数字与现实的完美融合
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto"
+            >
+              {/* AR Demo 1 */}
+              <div className="relative overflow-hidden rounded-xl shadow-lg group">
+                <img
+                  src="/AR_demo/AR_demo1.gif"
+                  alt="AR演示1"
+                  className="w-full h-auto min-h-[200px] sm:h-72 lg:h-64 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              {/* AR Demo 2 */}
+              <div className="relative overflow-hidden rounded-xl shadow-lg group">
+                <img
+                  src="/AR_demo/AR_demo2.gif"
+                  alt="AR演示2"
+                  className="w-full h-auto min-h-[200px] sm:h-72 lg:h-64 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              {/* AR Demo 3 */}
+              <div className="relative overflow-hidden rounded-xl shadow-lg group">
+                <img
+                  src="/AR_demo/AR_demo3.gif"
+                  alt="AR演示3"
+                  className="w-full h-auto min-h-[200px] sm:h-72 lg:h-64 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              {/* AR Demo 4 */}
+              <div className="relative overflow-hidden rounded-xl shadow-lg group">
+                <img
+                  src="/AR_demo/AR_demo4.gif"
+                  alt="AR演示4"
+                  className="w-full h-auto min-h-[200px] sm:h-72 lg:h-64 object-contain bg-gray-100 transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
             </motion.div>
           </div>
 
@@ -514,7 +607,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="group relative overflow-hidden rounded-2xl shadow-2xl cursor-pointer"
               >
-                <Link href="/cases" className="block">
+                <Link href={industry.href} className="block">
                   <div className="relative h-80 md:h-96 overflow-hidden">
                     {/* Background Image */}
                     <img
@@ -628,78 +721,102 @@ export default function Home() {
       </Section>
 
       {/* CTA Section */}
-        <Section padding="xl" className="bg-gradient-to-br from-indigo-600 via-purple-700 to-pink-600 relative overflow-hidden">
-          {/* Animated background elements */}
-          <div className="absolute inset-0">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-black/20 to-black/40"></div>
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl animate-pulse"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1.5s'}}></div>
-            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-blue-400/15 to-cyan-400/15 rounded-full blur-2xl animate-pulse" style={{animationDelay: '3s'}}></div>
-            
-            {/* Floating particles */}
-            <div className="absolute top-20 left-20 w-2 h-2 bg-white/40 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
-            <div className="absolute top-40 right-32 w-3 h-3 bg-yellow-300/50 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
-            <div className="absolute bottom-32 left-1/3 w-2 h-2 bg-blue-300/40 rounded-full animate-bounce" style={{animationDelay: '2s'}}></div>
-            <div className="absolute bottom-20 right-20 w-4 h-4 bg-pink-300/30 rounded-full animate-bounce" style={{animationDelay: '2.5s'}}></div>
-          </div>
+      <Section padding="xl" className="bg-gradient-to-br from-indigo-600 via-purple-700 to-pink-600 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-black/20 to-black/40"></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-br from-blue-400/15 to-cyan-400/15 rounded-full blur-2xl animate-pulse" style={{animationDelay: '3s'}}></div>
           
-          <Container className="relative z-10">
-            <div className="text-center max-w-4xl mx-auto">
+          {/* Floating particles */}
+          <div className="absolute top-20 left-20 w-2 h-2 bg-white/40 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute top-40 right-32 w-3 h-3 bg-yellow-300/50 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-32 left-1/3 w-2 h-2 bg-blue-300/40 rounded-full animate-bounce" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-20 right-20 w-4 h-4 bg-pink-300/30 rounded-full animate-bounce" style={{animationDelay: '2.5s'}}></div>
+        </div>
+        
+        <Container className="relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-                <motion.div
-                  initial={{ scale: 0.9 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
-                  <Heading as="h2" size="3xl" className="mb-6 text-white drop-shadow-lg">
+              <motion.div
+                initial={{ scale: 0.9 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <Heading as="h2" size="3xl" className="mb-6 text-white drop-shadow-lg">
                   准备开始您的AR项目了吗？
                 </Heading>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  viewport={{ once: true }}
-                >
-                  <Paragraph size="lg" className="mb-10 text-white/95 leading-relaxed drop-shadow-md">
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <Paragraph size="lg" className="mb-10 text-white/95 leading-relaxed drop-shadow-md">
                   联系我们的专家团队，获取免费的项目咨询和技术方案评估。
-                    让我们一起探索AR技术为您的业务成就无限可能。
+                  我们一起探索AR技术为您的业务成就无限可能。
                 </Paragraph>
-                </motion.div>
-                
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                  viewport={{ once: true }}
-                  className="flex flex-col sm:flex-row gap-6 justify-center"
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                viewport={{ once: true }}
+                className="flex flex-col sm:flex-row gap-6 justify-center"
+              >
+                <Button 
+                  variant="secondary" 
+                  size="lg" 
+                  className="bg-white text-indigo-600 hover:bg-gray-100 shadow-2xl hover:scale-110 hover:shadow-white/25 transition-all duration-500 px-10 py-5 text-lg font-bold rounded-2xl border-2 border-white/20 backdrop-blur-sm"
+                  onClick={openChatbot}
                 >
-                  <Link href="/contact">
-                      <Button variant="secondary" size="lg" className="bg-white text-indigo-600 hover:bg-gray-100 shadow-2xl hover:scale-110 hover:shadow-white/25 transition-all duration-500 px-10 py-5 text-lg font-bold rounded-2xl border-2 border-white/20 backdrop-blur-sm">
-                      <span className="flex items-center gap-2">
-                        免费咨询
-                      </span>
-                    </Button>
-                  </Link>
-                  <Link href="/cases">
-                      <Button variant="outline" size="lg" className="border-2 border-white/80 text-white hover:bg-white/10 hover:border-white shadow-2xl hover:scale-110 hover:shadow-white/25 transition-all duration-500 px-10 py-5 text-lg font-bold rounded-2xl backdrop-blur-sm">
-                      <span className="flex items-center gap-2">
-                        查看案例
-                      </span>
-                    </Button>
-                  </Link>
-                </motion.div>
+                  <span className="flex items-center gap-2">
+                    免费咨询
+                  </span>
+                </Button>
+                <Link href="/cases">
+                  <Button variant="outline" size="lg" className="border-2 border-white/80 text-white hover:bg-white/10 hover:border-white shadow-2xl hover:scale-110 hover:shadow-white/25 transition-all duration-500 px-10 py-5 text-lg font-bold rounded-2xl backdrop-blur-sm">
+                    <span className="flex items-center gap-2">
+                      查看案例
+                    </span>
+                  </Button>
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
         </Container>
       </Section>
+
+      {/* 自定义聊天机器人按钮 */}
+      <div 
+        className="fixed bottom-6 right-6 z-50 cursor-pointer group"
+        onClick={openChatbot}
+      >
+        <div className="w-14 h-14 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 24 24" 
+            fill="white"
+            className="w-7 h-7"
+          >
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+          </svg>
+        </div>
+        <div className="absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+          免费咨询
+        </div>
+      </div>
+
     </Layout>
   );
 }

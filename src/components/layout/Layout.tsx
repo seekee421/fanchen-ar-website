@@ -13,7 +13,8 @@ interface LayoutProps {
   showBreadcrumb?: boolean;
 }
 
-export function Layout({ children, showBreadcrumb = true }: LayoutProps) {
+// 改为默认导出
+function Layout({ children, showBreadcrumb = true }: LayoutProps) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
   const [isMounted, setIsMounted] = useState(false);
@@ -28,23 +29,28 @@ export function Layout({ children, showBreadcrumb = true }: LayoutProps) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1">
+        <motion.main className="flex-1">
           {children}
-        </main>
+        </motion.main>
         <Footer />
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <motion.main
+      {!isHomePage && showBreadcrumb && (
+        <Container>
+          <PageBreadcrumb />
+        </Container>
+      )}
+      
+      <motion.main 
         className="flex-1"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
         {children}
@@ -55,4 +61,4 @@ export function Layout({ children, showBreadcrumb = true }: LayoutProps) {
   );
 }
 
-export default Layout;
+export default Layout; // 默认导出

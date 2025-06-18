@@ -9,10 +9,10 @@ const Footer = () => {
     {
       title: '解决方案',
       links: [
-        { href: '/solutions/industrial', label: '工业AR' },
-        { href: '/solutions/education', label: '教育培训' },
-        { href: '/solutions/retail', label: '零售展示' },
-        { href: '/solutions/medical', label: '医疗健康' },
+        { href: '/services', label: '工业AR' },
+        { href: '/services', label: '教育培训' },
+        { href: '/services', label: '零售展示' },
+        { href: '/services', label: '医疗健康' },
       ],
     },
     {
@@ -95,13 +95,13 @@ const Footer = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span>湖北省武汉市洪山区光谷软件园</span>
+                  <span>湖北省武汉市江汉区武汉中央商务区CBD泛海国际SOHO城1栋307号</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
-                  <span>+86 027-8888-8888</span>
+                  <span>+86 027-8811-6621</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,8 +119,8 @@ const Footer = () => {
                   {section.title}
                 </Heading>
                 <ul className="space-y-2">
-                  {section.links.map((link) => (
-                    <li key={link.href}>
+                  {section.links.map((link, index) => (
+                    <li key={`${link.href}-${link.label}-${index}`}>
                       <Link
                         href={link.href}
                         className="text-gray-300 hover:text-white transition-colors duration-200 text-sm"

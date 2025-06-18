@@ -2,7 +2,6 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Layout } from '../../../components/layout';
-import SEO from '@/components/seo';
 import { Container, Section } from '@/components/ui';
 import { Heading, Paragraph } from '@/components/ui/Typography';
 import Button from '@/components/ui/Button';

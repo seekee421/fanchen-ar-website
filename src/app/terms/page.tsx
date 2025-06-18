@@ -262,7 +262,7 @@ export default function Terms() {
                         地址：湖北省武汉市洪山区光谷大道3号未来科技城
                       </Paragraph>
                       <Paragraph className="mb-2">
-                        电话：027-8888-8888
+                        电话：027-8811-6621
                       </Paragraph>
                       <Paragraph className="mb-2">
                         邮箱：legal@fanchen-ar.com

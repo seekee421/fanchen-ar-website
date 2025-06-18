@@ -32,10 +32,14 @@ Crawl-delay: 1
 # Host directive
 Host: https://fanchen-ar.com`;
 
-  return new NextResponse(robotsTxt, {
+  // 使用TextEncoder确保正确的编码
+  const encoder = new TextEncoder();
+  const encodedContent = encoder.encode(robotsTxt);
+
+  return new Response(encodedContent, {
     status: 200,
     headers: {
-      'Content-Type': 'text/plain',
+      'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
     },
   });

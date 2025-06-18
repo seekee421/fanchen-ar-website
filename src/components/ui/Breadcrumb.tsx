@@ -49,7 +49,7 @@ export function Breadcrumb({
   return (
     <nav
       className={cn(
-        'flex items-center space-x-2 text-sm text-gray-600',
+        'flex items-center space-x-2 text-sm',
         className
       )}
       aria-label="面包屑导航"
@@ -60,7 +60,7 @@ export function Breadcrumb({
         return (
           <React.Fragment key={index}>
             {index > 0 && (
-              <span className="text-gray-400 mx-2" aria-hidden="true">
+              <span className="opacity-60 mx-2" aria-hidden="true">
                 {separator}
               </span>
             )}
@@ -75,7 +75,7 @@ export function Breadcrumb({
             ) : (
               <span
                 className={cn(
-                  isLast ? 'text-gray-900 font-medium' : 'text-gray-600'
+                  isLast ? 'font-medium' : ''
                 )}
                 aria-current={isLast ? 'page' : undefined}
               >

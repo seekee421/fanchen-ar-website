@@ -1,331 +1,350 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import Link from 'next/link';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { 
-  Factory, GraduationCap, ShoppingBag, Heart, Building, Building2,
-  Calendar, Clock, Users, TrendingUp, ArrowRight, Star, CheckCircle,
-  Eye, ThumbsUp, Award, Target
+  Building, 
+  Calendar, 
+  CheckCircle, 
+  ArrowRight,
+  Users,
+  Target,
+  Award,
+  TrendingUp,
+  Zap,
+  Globe,
+  Smartphone,
+  Monitor,
+  Gamepad2,
+  ShoppingBag,
+  GraduationCap,
+  Heart,
+  Car,
+  Home
 } from 'lucide-react';
-import { Layout } from '../../components/layout';
-import SEO from '@/components/seo';
-import { Container, Section } from '@/components/ui';
+
+import Layout from '@/components/layout/Layout';
+import { Container } from '@/components/ui/Container';
+import { Section } from '@/components/ui/Section';
 import { Heading, Paragraph } from '@/components/ui/Typography';
 import Button from '@/components/ui/Button';
-import Card, { CardContent } from '@/components/ui/Card';
-import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import Card from '@/components/ui/Card';
+import { CardContent } from '@/components/ui/Card';
 
 export default function Cases() {
-  const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedCase, setSelectedCase] = useState(null);
 
   // 案例分类
   const categories = [
-    { id: '全部', name: '全部案例', count: 12 },
-    { id: '工业制造', name: '工业制造', count: 4 },
-    { id: '教育培训', name: '教育培训', count: 3 },
-    { id: '零售电商', name: '零售电商', count: 2 },
-    { id: '医疗健康', name: '医疗健康', count: 2 },
-    { id: '建筑设计', name: '建筑设计', count: 1 }
+    { id: 'all', name: '全部案例', count: 12 },
+    { id: 'retail', name: '零售电商', count: 4 },
+    { id: 'education', name: '教育培训', count: 3 },
+    { id: 'healthcare', name: '医疗健康', count: 2 },
+    { id: 'automotive', name: '汽车工业', count: 2 },
+    { id: 'real-estate', name: '房地产', count: 1 }
   ];
 
   // 案例数据
+  // 在案例数据数组的开头添加slug字段
   const cases = [
     {
       id: 1,
-      title: '某汽车制造厂AR装配指导系统',
-      category: '工业制造',
-      client: '某知名汽车制造企业',
-      description: '为汽车制造企业开发的AR装配指导系统，通过AR技术为工人提供实时装配指导，大幅提升装配效率和质量。',
-      challenge: '传统装配流程依赖纸质图纸，容易出错，培训周期长，质量控制困难。',
-      solution: '开发AR装配指导系统，实时显示装配步骤、零件信息和质量检查点，提供智能错误检测和纠正功能。',
-      results: [
-        '装配效率提升40%',
-        '装配错误率降低65%',
-        '新员工培训时间减少50%',
-        '质量检测准确率提升30%'
+      slug: 'ar-virtual-fitting-room', // 对应1.md
+      title: 'AR虚拟试衣间解决方案',
+      category: '零售电商',
+      client: '时尚品牌A',
+      description: '为知名时尚品牌打造的AR虚拟试衣间，让顾客在家即可体验真实的试衣效果，大幅提升了在线购物体验和转化率。',
+      challenges: [
+        '传统在线购物无法试穿体验',
+        '高退货率影响盈利能力',
+        '用户购买决策困难'
       ],
-      technologies: ['AR引擎', 'SLAM定位', '物体识别', '数据分析'],
+      solutions: [
+        '开发高精度3D人体建模技术',
+        '实现实时服装物理仿真',
+        '集成AI尺寸推荐算法'
+      ],
+      results: [
+        '在线转化率提升45%',
+        '退货率降低30%',
+        '用户满意度提升至92%',
+        '平均购物时长增加60%'
+      ],
+      technologies: ['ARKit', 'Unity 3D', '机器学习', '计算机视觉'],
       duration: '6个月',
       teamSize: '8人',
-      image: '/images/cases/automotive-assembly.jpg',
-      icon: <Factory className="w-8 h-8" />,
-      color: 'from-blue-500 to-blue-700',
+      image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
+      icon: <ShoppingBag className="w-16 h-16" />,
+      color: 'from-purple-500 to-pink-500',
       status: '已完成',
       year: '2023',
-      tags: ['工业4.0', '智能制造', '质量控制'],
+      tags: ['AR试衣', '电商', '3D建模', 'AI推荐'],
       metrics: {
-        efficiency: '+40%',
-        accuracy: '+65%',
-        training: '-50%',
-        satisfaction: '95%'
+        roi: '300%',
+        users: '50万+',
+        satisfaction: '92%'
       }
     },
     {
       id: 2,
-      title: '某医科大学AR解剖教学平台',
+      slug: 'ar-virtual-teaching-classroom',
+      title: 'AR互动教学平台',
       category: '教育培训',
-      client: '知名医科大学',
-      description: '为医科大学开发的AR解剖教学平台，让学生通过AR技术进行3D人体解剖学习，提升教学效果。',
-      challenge: '传统解剖教学依赖标本和图片，学习效果有限，学生理解困难，教学成本高。',
-      solution: '开发AR解剖教学平台，提供3D人体模型、器官结构展示、交互式学习和考核评估功能。',
+      client: '知名大学B',
+      description: '为高等教育机构开发的AR互动教学平台，将抽象的理论知识转化为可视化的3D模型，提升学习效果。',
+      challenges: [
+        '抽象概念难以理解',
+        '学生参与度不高',
+        '传统教学方式单一'
+      ],
+      solutions: [
+        '构建3D知识模型库',
+        '开发多人协作AR环境',
+        '设计游戏化学习机制'
+      ],
       results: [
-        '学习效果提升60%',
+        '学习效率提升65%',
+        '知识掌握率提高40%',
         '学生参与度提升80%',
-        '教学成本降低40%',
-        '知识留存率提升50%'
+        '教师满意度达95%'
       ],
-      technologies: ['3D建模', 'AR渲染', '交互设计', '学习分析'],
-      duration: '4个月',
-      teamSize: '6人',
-      image: '/images/cases/medical-education.jpg',
-      icon: <GraduationCap className="w-8 h-8" />,
-      color: 'from-green-500 to-green-700',
-      status: '已完成',
-      year: '2023',
-      tags: ['医学教育', '3D教学', '虚拟解剖'],
-      metrics: {
-        learning: '+60%',
-        engagement: '+80%',
-        cost: '-40%',
-        retention: '+50%'
-      }
-    },
-    {
-      id: 3,
-      title: '某电商平台AR虚拟试穿系统',
-      category: '零售电商',
-      client: '大型电商平台',
-      description: '为电商平台开发的AR虚拟试穿系统，让用户在线试穿服装，提升购物体验和转化率。',
-      challenge: '在线购物无法试穿，退货率高，用户体验差，转化率低。',
-      solution: '开发AR虚拟试穿系统，支持实时试穿、尺寸匹配、颜色选择和社交分享功能。',
-      results: [
-        '转化率提升35%',
-        '退货率降低45%',
-        '用户满意度提升70%',
-        '平均停留时间增加60%'
-      ],
-      technologies: ['人体识别', 'AR渲染', '尺寸算法', '云端处理'],
-      duration: '5个月',
-      teamSize: '10人',
-      image: '/images/cases/virtual-try-on.jpg',
-      icon: <ShoppingBag className="w-8 h-8" />,
-      color: 'from-purple-500 to-purple-700',
-      status: '已完成',
-      year: '2023',
-      tags: ['电商营销', '虚拟试穿', '用户体验'],
-      metrics: {
-        conversion: '+35%',
-        returns: '-45%',
-        satisfaction: '+70%',
-        engagement: '+60%'
-      }
-    },
-    {
-      id: 4,
-      title: '某医院AR手术导航系统',
-      category: '医疗健康',
-      client: '三甲医院',
-      description: '为医院开发的AR手术导航系统，为外科医生提供精确的手术导航和实时指导。',
-      challenge: '传统手术依赖医生经验，精度有限，风险较高，学习曲线陡峭。',
-      solution: '开发AR手术导航系统，提供3D解剖结构显示、实时定位、风险提示和手术记录功能。',
-      results: [
-        '手术精度提升30%',
-        '手术时间缩短25%',
-        '并发症减少40%',
-        '医生满意度95%'
-      ],
-      technologies: ['医学影像', '3D重建', '精确定位', '实时渲染'],
+      technologies: ['ARCore', 'Unity 3D', '云计算', '多人同步'],
       duration: '8个月',
-      teamSize: '12人',
-      image: '/images/cases/surgery-navigation.jpg',
-      icon: <Heart className="w-8 h-8" />,
-      color: 'from-red-500 to-red-700',
+      teamSize: '10人',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop',
+      icon: <GraduationCap className="w-16 h-16" />,
+      color: 'from-blue-500 to-cyan-500',
       status: '已完成',
       year: '2023',
-      tags: ['精准医疗', '手术导航', '医疗安全'],
+      tags: ['AR教育', '3D模型', '多人协作', '游戏化'],
       metrics: {
-        precision: '+30%',
-        time: '-25%',
-        complications: '-40%',
+        roi: '250%',
+        users: '10万+',
         satisfaction: '95%'
       }
     },
     {
-      id: 5,
-      title: '某制造企业AR设备维护平台',
-      category: '工业制造',
-      client: '大型制造企业',
-      description: '为制造企业开发的AR设备维护平台，为维护人员提供可视化维护指导和远程专家支持。',
-      challenge: '设备维护依赖经验，故障诊断困难，维修效率低，安全风险高。',
-      solution: '开发AR设备维护平台，提供故障诊断、维修指导、安全提醒和维护记录功能。',
-      results: [
-        '维修效率提升45%',
-        '故障率降低35%',
-        '安全事故减少80%',
-        '维护成本降低30%'
+      id: 3,
+      slug: 'ar-virtual-hospital',
+      title: 'AR手术导航系统',
+      category: '医疗健康',
+      client: '三甲医院C',
+      description: '为医疗机构开发的AR手术导航系统，通过实时影像叠加技术，为外科医生提供精确的手术指导。',
+      challenges: [
+        '手术精度要求极高',
+        '实时性能要求严格',
+        '医疗数据安全性'
       ],
-      technologies: ['故障诊断', 'AR指导', '远程协作', '数据分析'],
-      duration: '7个月',
-      teamSize: '9人',
-      image: '/images/cases/equipment-maintenance.jpg',
-      icon: <Factory className="w-8 h-8" />,
-      color: 'from-orange-500 to-orange-700',
+      solutions: [
+        '开发毫米级精度追踪',
+        '优化实时渲染算法',
+        '建立医疗级安全架构'
+      ],
+      results: [
+        '手术精度提升35%',
+        '手术时间缩短25%',
+        '并发症率降低40%',
+        '医生满意度达98%'
+      ],
+      technologies: ['HoloLens', 'DICOM', '实时追踪', '医疗云'],
+      duration: '12个月',
+      teamSize: '12人',
+      image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
+      icon: <Heart className="w-16 h-16" />,
+      color: 'from-red-500 to-pink-500',
       status: '已完成',
       year: '2023',
-      tags: ['预测性维护', '远程支持', '安全管理'],
+      tags: ['AR医疗', '手术导航', '精密追踪', '医疗安全'],
       metrics: {
-        efficiency: '+45%',
-        failures: '-35%',
-        safety: '-80%',
-        cost: '-30%'
+        roi: '400%',
+        users: '500+',
+        satisfaction: '98%'
       }
     },
     {
-      id: 6,
-      title: '某职业学院AR技能培训系统',
-      category: '教育培训',
-      client: '职业技术学院',
-      description: '为职业学院开发的AR技能培训系统，为学生提供安全、高效的技能训练环境。',
-      challenge: '传统技能培训成本高、风险大、效果有限，实训设备不足。',
-      solution: '开发AR技能培训系统，提供虚拟实训环境、技能评估、进度跟踪和证书管理功能。',
-      results: [
-        '培训效果提升55%',
-        '培训成本降低40%',
-        '安全事故减少90%',
-        '学生满意度92%'
+      id: 4,
+      slug: 'ar-virtual-car',
+      title: 'AR汽车展示系统',
+      category: '汽车工业',
+      client: '汽车品牌D',
+      description: '为汽车制造商打造的AR展示系统，让客户可以在展厅中体验车辆的各种配置和功能。',
+      challenges: [
+        '展厅空间有限',
+        '车型配置展示复杂',
+        '客户体验不够直观'
       ],
-      technologies: ['技能模拟', '评估算法', '进度跟踪', '证书系统'],
+      solutions: [
+        '开发1:1比例AR车型',
+        '实现配置实时切换',
+        '集成语音交互功能'
+      ],
+      results: [
+        '展厅效率提升50%',
+        '客户停留时间增加70%',
+        '销售转化率提升35%',
+        '客户满意度达94%'
+      ],
+      technologies: ['ARKit', 'Unity 3D', '语音识别', '云渲染'],
       duration: '5个月',
-      teamSize: '7人',
-      image: '/images/cases/skills-training.jpg',
-      icon: <GraduationCap className="w-8 h-8" />,
-      color: 'from-teal-500 to-teal-700',
+      teamSize: '6人',
+      image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&h=600&fit=crop',
+      icon: <Car className="w-16 h-16" />,
+      color: 'from-gray-600 to-gray-800',
       status: '已完成',
       year: '2023',
-      tags: ['职业培训', '技能认证', '安全培训'],
+      tags: ['AR展示', '汽车', '配置切换', '语音交互'],
       metrics: {
-        effectiveness: '+55%',
-        cost: '-40%',
-        safety: '-90%',
-        satisfaction: '92%'
+        roi: '280%',
+        users: '20万+',
+        satisfaction: '94%'
       }
-    }
-  ];
-
-  // 统计数据
-  const statistics = [
-    {
-      label: '成功案例',
-      value: '50+',
-      description: '已完成项目',
-      icon: <Award className="w-8 h-8 text-blue-500" />
     },
     {
-      label: '客户满意度',
-      value: '98%',
-      description: '客户好评率',
-      icon: <ThumbsUp className="w-8 h-8 text-green-500" />
-    },
-    {
-      label: '效率提升',
-      value: '40%',
-      description: '平均效率提升',
-      icon: <TrendingUp className="w-8 h-8 text-purple-500" />
-    },
-    {
-      label: '服务行业',
-      value: '10+',
-      description: '覆盖行业数量',
-      icon: <Target className="w-8 h-8 text-orange-500" />
+      id: 5,
+      slug: 'ar-virtual-house',
+      title: 'AR房产展示平台',
+      category: '房地产',
+      client: '地产公司E',
+      description: '为房地产开发商创建的AR房产展示平台，让客户可以在售楼处体验未建成房屋的真实效果。',
+      challenges: [
+        '期房无法实地查看',
+        '户型理解困难',
+        '装修效果难以想象'
+      ],
+      solutions: [
+        '构建高精度建筑模型',
+        '开发装修风格切换',
+        '实现虚拟漫游体验'
+      ],
+      results: [
+        '销售效率提升60%',
+        '客户决策时间缩短40%',
+        '预售转化率提升45%',
+        '客户满意度达96%'
+      ],
+      technologies: ['ARCore', 'Unity 3D', '建筑建模', 'VR集成'],
+      duration: '4个月',
+      teamSize: '7人',
+      image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=600&fit=crop',
+      icon: <Home className="w-16 h-16" />,
+      color: 'from-green-500 to-teal-500',
+      status: '已完成',
+      year: '2023',
+      tags: ['AR房产', '建筑可视化', '虚拟漫游', '装修预览'],
+      metrics: {
+        roi: '350%',
+        users: '30万+',
+        satisfaction: '96%'
+      }
     }
   ];
 
   // 筛选案例
-  const filteredCases = useMemo(() => {
-    if (selectedCategory === '全部') {
-      return cases;
+  const filteredCases = selectedCategory === 'all' 
+    ? cases 
+    : cases.filter(caseItem => caseItem.category === categories.find(cat => cat.id === selectedCategory)?.name);
+
+  // 统计数据
+  const stats = [
+    {
+      icon: <Target className="w-8 h-8 text-blue-500" />,
+      value: '50+',
+      label: '成功案例',
+      description: '覆盖多个行业领域'
+    },
+    {
+      icon: <Users className="w-8 h-8 text-green-500" />,
+      value: '100万+',
+      label: '服务用户',
+      description: '累计用户体验次数'
+    },
+    {
+      icon: <Award className="w-8 h-8 text-yellow-500" />,
+      value: '95%',
+      label: '客户满意度',
+      description: '持续优质服务'
+    },
+    {
+      icon: <TrendingUp className="w-8 h-8 text-purple-500" />,
+      value: '300%',
+      label: '平均ROI',
+      description: '投资回报率'
     }
-    return cases.filter(caseItem => caseItem.category === selectedCategory);
-  }, [selectedCategory]);
+  ];
 
   return (
     <Layout>
-      <SEO
-        title="成功案例 - 武汉凡尘合创科技"
-        description="查看武汉凡尘合创的AR项目成功案例，涵盖工业制造、教育培训、零售电商、医疗健康等多个行业的实际应用案例。"
-        keywords="AR案例, 增强现实案例, 工业AR案例, 教育AR案例, 零售AR案例, 医疗AR案例"
-      />
-
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        {/* 面包屑导航 */}
-        <Container className="pt-8">
-          <Breadcrumb 
-            items={[
-              { label: '首页', href: '/' },
-              { label: '案例', href: '/cases' }
-            ]}
-          />
-        </Container>
-
-        {/* 页面标题 */}
-        <Section className="pt-12 pb-8">
-          <Container>
+      <div className="bg-gray-900 min-h-screen">
+        {/* Hero Section */}
+        <Section padding="xl" className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10"></div>
+          <Container className="relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
+              transition={{ duration: 0.8 }}
+              className="text-center max-w-4xl mx-auto"
             >
-              <Heading size="xl" className="mb-6 text-gray-900">
+              <Heading as="h1" size="4xl" className="mb-6 text-white">
                 成功案例展示
               </Heading>
-              <Paragraph size="lg" className="text-gray-700 max-w-4xl mx-auto leading-relaxed">
-                探索我们为不同行业客户打造的AR解决方案，
-                每个案例都展现了AR技术在实际业务中的强大价值和创新应用，
-                助力企业实现数字化转型和业务增长。
+              <Paragraph size="xl" className="mb-8 text-gray-300 leading-relaxed">
+                探索我们为各行业客户打造的创新AR解决方案，见证技术如何改变业务模式，创造卓越价值。
               </Paragraph>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <Link href="/contact">
+                  <Button variant="primary" size="lg" className="shadow-xl hover:scale-105 transition-transform duration-300 text-white">
+                    咨询合作
+                  </Button>
+                </Link>
+                <Link href="/services">
+                  <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-black shadow-xl hover:scale-105 transition-all duration-300">
+                    了解服务
+                  </Button>
+                </Link>
+              </div>
             </motion.div>
-        </Container>
-      </Section>
+          </Container>
+        </Section>
 
         {/* 统计数据 */}
-        <Section className="py-12">
-        <Container>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {statistics.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
+        <Section className="py-16 bg-gray-800">
+          <Container>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <Card className="text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <Card className="text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-gray-700 border-gray-600">
                     <CardContent className="p-6">
                       <div className="flex justify-center mb-4">
                         {stat.icon}
                       </div>
-                      <div className="text-3xl font-bold text-gray-900 mb-2">
+                      <div className="text-3xl font-bold text-white mb-2">
                         {stat.value}
                       </div>
-                      <div className="text-sm font-semibold text-gray-800 mb-1">
+                      <div className="text-sm font-semibold text-gray-300 mb-1">
                         {stat.label}
                       </div>
-                      <div className="text-xs text-gray-600">
+                      <div className="text-xs text-gray-400">
                         {stat.description}
                       </div>
                     </CardContent>
                   </Card>
-              </motion.div>
-            ))}
-          </div>
-        </Container>
-      </Section>
+                </motion.div>
+              ))}
+            </div>
+          </Container>
+        </Section>
 
         {/* 案例分类筛选 */}
-        <Section className="py-8">
-        <Container>
+        <Section className="py-8 bg-gray-900">
+          <Container>
             <div className="flex flex-wrap justify-center gap-4 mb-12">
               {categories.map((category, index) => (
                 <motion.div
@@ -334,42 +353,53 @@ export default function Cases() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-              <Button
-                variant={selectedCategory === category.id ? 'primary' : 'outline'}
+                  <Button
+                    variant={selectedCategory === category.id ? 'primary' : 'outline'}
                     size="md"
-                onClick={() => setSelectedCategory(category.id)}
-                    className="transition-all duration-300 hover:scale-105 font-semibold"
-              >
-                {category.name}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`transition-all duration-300 hover:scale-105 font-semibold ${
+                      selectedCategory === category.id 
+                        ? 'text-white' 
+                        : 'border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white'
+                    }`}
+                  >
+                    {category.name}
                     <span className="ml-2 text-xs bg-white/20 px-2 py-1 rounded-full">
                       {category.count}
                     </span>
-              </Button>
+                  </Button>
                 </motion.div>
-            ))}
-          </div>
-        </Container>
-      </Section>
+              ))}
+            </div>
+          </Container>
+        </Section>
 
         {/* 案例列表 */}
-        <Section className="py-8">
-        <Container>
+        <Section className="py-8 bg-gray-900">
+          <Container>
             <motion.div
               layout
               className="grid grid-cols-1 lg:grid-cols-2 gap-8"
             >
               {filteredCases.map((caseItem, index) => (
-              <motion.div
+                <motion.div
                   key={caseItem.id}
                   layout
-                initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                  <Card className="h-full hover:shadow-2xl transition-all duration-300 group cursor-pointer overflow-hidden">
-                    {/* 案例头部 */}
-                    <div className={`aspect-video bg-gradient-to-br ${caseItem.color} rounded-t-lg relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors duration-300" />
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <Card className="h-full hover:shadow-2xl transition-all duration-300 group cursor-pointer overflow-hidden bg-gray-800 border-gray-700">
+                    {/* 案例头部 - 使用在线图片 */}
+                    <div className="aspect-video relative overflow-hidden">
+                      <img 
+                        src={caseItem.image} 
+                        alt={caseItem.title}
+                        className="w-full h-full object-cover"
+                      />
+                      {/* 半透明叠加层 */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${caseItem.color} opacity-80 group-hover:opacity-70 transition-opacity duration-300`} />
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-white transform group-hover:scale-110 transition-transform duration-300">
                           {caseItem.icon}
@@ -392,10 +422,10 @@ export default function Cases() {
                     <CardContent className="p-8">
                       {/* 案例标题和客户 */}
                       <div className="mb-6">
-                        <Heading as="h3" size="lg" className="mb-3 text-gray-900 group-hover:text-primary transition-colors duration-300">
+                        <Heading as="h3" size="lg" className="mb-3 text-white group-hover:text-primary transition-colors duration-300">
                           {caseItem.title}
                         </Heading>
-                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                        <div className="flex items-center gap-4 text-sm text-gray-400 mb-3">
                           <span className="flex items-center gap-1">
                             <Building className="w-4 h-4" />
                             {caseItem.client}
@@ -405,7 +435,7 @@ export default function Cases() {
                             {caseItem.year}
                           </span>
                         </div>
-                        <Paragraph className="text-gray-700 leading-relaxed">
+                        <Paragraph className="text-gray-300 leading-relaxed">
                           {caseItem.description}
                         </Paragraph>
                       </div>
@@ -413,51 +443,51 @@ export default function Cases() {
                       {/* 标签 */}
                       <div className="flex flex-wrap gap-2 mb-6">
                         {caseItem.tags.map((tag, idx) => (
-                          <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md">
+                          <span key={idx} className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-md">
                             {tag}
                           </span>
                         ))}
-                    </div>
+                      </div>
                     
                       {/* 关键成果 */}
                       <div className="space-y-3 mb-6">
-                        <div className="text-sm font-semibold text-gray-800 mb-2">关键成果：</div>
+                        <div className="text-sm font-semibold text-gray-300 mb-2">关键成果：</div>
                         {caseItem.results.slice(0, 3).map((result, idx) => (
                           <div key={idx} className="flex items-center gap-3">
                             <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                            <span className="text-sm text-gray-600">{result}</span>
+                            <span className="text-sm text-gray-400">{result}</span>
                           </div>
                         ))}
                       </div>
 
                       {/* 项目信息 */}
-                      <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+                      <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-gray-700 rounded-lg">
                         <div className="text-center">
-                          <div className="text-sm text-gray-600">项目周期</div>
-                          <div className="font-semibold text-gray-800">{caseItem.duration}</div>
+                          <div className="text-sm text-gray-400">项目周期</div>
+                          <div className="font-semibold text-gray-200">{caseItem.duration}</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-sm text-gray-600">团队规模</div>
-                          <div className="font-semibold text-gray-800">{caseItem.teamSize}</div>
+                          <div className="text-sm text-gray-400">团队规模</div>
+                          <div className="font-semibold text-gray-200">{caseItem.teamSize}</div>
+                        </div>
                       </div>
-                    </div>
                     
                       {/* 查看详情按钮 */}
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div className="text-sm text-gray-600">
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                        <div className="text-sm text-gray-400">
                           了解更多详情
-                    </div>
-                        <Link href={`/cases/${caseItem.id}`}>
-                          <Button size="sm" className="group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                        </div>
+                        <Link href={`/cases/${caseItem.slug}`}>
+                          <Button size="sm" className="group-hover:bg-primary group-hover:text-white transition-colors duration-300 text-white">
                             查看详情
                             <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
                         </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </motion.div>
 
             {/* 无案例提示 */}
@@ -468,51 +498,51 @@ export default function Cases() {
                 className="text-center py-16"
               >
                 <div className="text-6xl mb-4">🔍</div>
-                <Heading as="h3" size="lg" className="mb-4 text-gray-700">
+                <Heading as="h3" size="lg" className="mb-4 text-gray-300">
                   暂无相关案例
-                    </Heading>
-                <Paragraph className="text-gray-600">
+                </Heading>
+                <Paragraph className="text-gray-400">
                   请尝试选择其他分类或联系我们了解更多案例
-                    </Paragraph>
+                </Paragraph>
               </motion.div>
             )}
-        </Container>
-      </Section>
+          </Container>
+        </Section>
 
-      {/* CTA Section */}
+        {/* CTA Section */}
         <Section padding="xl" className="bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20"></div>
           <Container className="relative z-10">
             <div className="text-center max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
                 <Heading as="h2" size="3xl" className="mb-6 text-white">
                   让我们为您打造下一个成功案例
-              </Heading>
+                </Heading>
                 <Paragraph size="lg" className="mb-10 text-white/95 leading-relaxed">
                   每个成功案例的背后都有我们专业团队的精心设计和技术创新。
                   联系我们，让AR技术为您的业务创造更大价值。
-              </Paragraph>
+                </Paragraph>
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
                   <Link href="/contact">
-                    <Button variant="primary" size="lg" className="shadow-xl hover:scale-105 transition-transform duration-300 px-8 py-4 text-lg font-semibold">
+                    <Button variant="primary" size="lg" className="shadow-xl hover:scale-105 transition-transform duration-300 px-8 py-4 text-lg font-semibold text-white">
                       开始合作
                     </Button>
                   </Link>
                   <Link href="/services">
-                    <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-gray-900 shadow-xl hover:scale-105 transition-all duration-300 px-8 py-4 text-lg font-semibold">
+                    <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-black shadow-xl hover:scale-105 transition-all duration-300 px-8 py-4 text-lg font-semibold">
                       了解服务
-                </Button>
+                    </Button>
                   </Link>
-              </div>
-            </motion.div>
-          </div>
-        </Container>
-      </Section>
+                </div>
+              </motion.div>
+            </div>
+          </Container>
+        </Section>
       </div>
     </Layout>
   );

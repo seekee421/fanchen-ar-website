@@ -32,6 +32,16 @@ const defaultSEO = {
   author: '武汉凡尘合创科技有限公司',
 };
 
+// 安全地生成JSON字符串，确保正确的UTF-8编码
+function safeJSONStringify(obj: any): string {
+  try {
+    return JSON.stringify(obj, null, 0);
+  } catch (error) {
+    console.error('JSON stringify error:', error);
+    return '{}';
+  }
+}
+
 export function SEO({
   title,
   description = defaultSEO.description,
@@ -64,6 +74,48 @@ export function SEO({
   if (noIndex) robots.push('noindex');
   if (noFollow) robots.push('nofollow');
   const robotsContent = robots.length > 0 ? robots.join(', ') : 'index, follow';
+
+  // 组织信息结构化数据
+  const organizationData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteName,
+    description: description,
+    url: defaultSEO.url,
+    logo: `${defaultSEO.url}/images/logo.png`,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+86-027-8811-6621',
+      contactType: 'customer service',
+      areaServed: 'CN',
+      availableLanguage: 'Chinese'
+    },
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '光谷软件园B座15楼',
+      addressLocality: '武汉',
+      addressRegion: '湖北省',
+      addressCountry: 'CN'
+    },
+    sameAs: [
+      'https://weibo.com/fanchen-ar',
+      'https://www.linkedin.com/company/fanchen-ar'
+    ]
+  };
+
+  // 网站信息结构化数据
+  const websiteData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteName,
+    description: description,
+    url: fullUrl,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${defaultSEO.url}/search?q={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    }
+  };
 
   return (
     <Head>
@@ -127,32 +179,7 @@ export function SEO({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Organization',
-            name: siteName,
-            description: description,
-            url: defaultSEO.url,
-            logo: `${defaultSEO.url}/images/logo.png`,
-            contactPoint: {
-              '@type': 'ContactPoint',
-              telephone: '+86-027-8888-9999',
-              contactType: 'customer service',
-              areaServed: 'CN',
-              availableLanguage: 'Chinese'
-            },
-            address: {
-              '@type': 'PostalAddress',
-              streetAddress: '光谷软件园B座15楼',
-              addressLocality: '武汉',
-              addressRegion: '湖北省',
-              addressCountry: 'CN'
-            },
-            sameAs: [
-              'https://weibo.com/fanchen-ar',
-              'https://www.linkedin.com/company/fanchen-ar'
-            ]
-          })
+          __html: safeJSONStringify(organizationData)
         }}
       />
       
@@ -161,18 +188,7 @@ export function SEO({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebSite',
-              name: siteName,
-              description: description,
-              url: fullUrl,
-              potentialAction: {
-                '@type': 'SearchAction',
-                target: `${defaultSEO.url}/search?q={search_term_string}`,
-                'query-input': 'required name=search_term_string'
-              }
-            })
+            __html: safeJSONStringify(websiteData)
           }}
         />
       )}
